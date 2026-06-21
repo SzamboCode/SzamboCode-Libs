@@ -1,34 +1,83 @@
 name: Release Libs
 
+
+
 on:
+
   push:
+
     tags:
+
       - 'v*'
 
+
+
 jobs:
+
   release:
+
     runs-on: ubuntu-latest
+
     permissions:
+
       contents: write
 
+
+
     steps:
+
       - name: Checkout
+
         uses: actions/checkout@v4
 
+
+
+      - name: Prepare release assets
+
+        run: |
+
+          mkdir -p release-assets
+
+          for jar in paper/*.jar; do
+
+            cp "$jar" "release-assets/paper-$(basename "$jar")"
+
+          done
+
+          for jar in velocity/*.jar; do
+
+            cp "$jar" "release-assets/velocity-$(basename "$jar")"
+
+          done
+
+          cp paper/manifest.txt release-assets/paper-manifest.txt
+
+          cp velocity/manifest.txt release-assets/velocity-manifest.txt
+
+          cp paper/version.properties release-assets/paper-version.properties
+
+          cp velocity/version.properties release-assets/velocity-version.properties
+
+
+
       - name: Create GitHub Release
+
         uses: softprops/action-gh-release@v2
+
         with:
+
           name: "SzamboCode Libs ${{ github.ref_name }}"
+
           body: |
+
             ## Biblioteki ${{ github.ref_name }}
-            
-            ### Paper
-            Biblioteki dla Paper.
-            
-            ### Velocity
-            Biblioteki dla Velocity.
-          files: |
-            paper/*.jar
-            velocity/*.jar
-            paper/manifest.txt
-            paper/version.properties
+
+
+
+            Tag odpowiada wersji Core
+
+
+            Assety: `paper-*.jar`, `velocity-*.jar` (prefiks platformy unika kolizji nazw).
+
+          files: release-assets/*
+
