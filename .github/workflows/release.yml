@@ -23,10 +23,10 @@ jobs:
             ## Biblioteki ${{ github.ref_name }}
             
             ### Paper
-            Biblioteki dla Paper/Spigot serwerów.
+            Biblioteki dla Paper.
             
             ### Velocity
-            Biblioteki dla Velocity proxy.
+            Biblioteki dla Velocity.
           files: |
             paper/*.jar
             velocity/*.jar
